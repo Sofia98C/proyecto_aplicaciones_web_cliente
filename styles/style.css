@@ -1,6 +1,6 @@
 :root{
 
-    background-color: #ADA996;
+    background-color: #fdf6ec;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     margin: 0;
@@ -9,23 +9,65 @@
 
 }
 
-h1 {
-    color: #C5796D;
-}
 body{
     margin: 0;
     padding: 0;
-}
-.nav-header{
-    height: 100px;
-    justify-content: center;
-    align-items: center;
-    background-color: #aa4b6b;
-    border: 0 ;
-}
+  
 
+
+}
+header{
+    padding: 20px;
+    background-color: #C5796D;
+}
+.nav-bounds{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.nav-logo,
+.container-icon{
+    flex: 0;
+
+}
+.store-title{
+    font-size: 2rem;
+    color: #5d4037;
+    margin: 0 20px;
+    font-family: 'Arial',sans-serif;
+    text-align: center;
+}
+.search-box{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
 aside{
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
+    padding: 20px;
+    background-color: #fff8f4;
+    border-radius: 10px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+aside h3{
+    margin-bottom: 10px;
+    color: #aa4b6b;
+}
+aside ul{
+    list-style-type: none;
+    padding: 0;
+}
+aside li{
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #fdfdfc;
+    border-radius: 5px;
+    cursor: default;
 }
 
 nav div{
@@ -50,20 +92,51 @@ footer{
 }
 .product-container{
     display: grid;  
-    grid-template-columns: (1fr,1fr,1fr);
+    grid-template-columns: repeat(3,1fr);
     gap: 20px;
-    flex-grow: 1;
-    padding: 10px;
+    padding: 20px;
+
 }
 .product-item{
-    background-color:#434343 ;
+    background: color #f5f5f5; 
     border-radius: 5px;
     padding: 10px;
     text-align: center;
+    color: #fdfdfc;
 }
 .product-item:hover{
     background-color: #000000;
     transition: all 0.6s ease;
 }
+.product-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+}
 
+button{
+    background-color: #ff8a65;
+    color: #333;
+    border: none ;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+button:hover{
+    background-color: #d84315;
+}
+@media(max-width:768px ){
+    .product-container{
+        grid-template-columns: repeat(1,1fr);
+    }
+    aside{
+        width: 100%;
+        order: 2;
+    }
+    main{
+        flex-direction: column;
+    }
 
+}
