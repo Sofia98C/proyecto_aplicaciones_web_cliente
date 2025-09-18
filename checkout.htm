@@ -1,6 +1,73 @@
-<!D
-             
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../styles/style.css">
+        <title>Mi Página Web</title>
+    </head>
+
+    <body>    
     
-    <footer>Datos de la Pagina 2025</footer>
+      <header class="nav-header">  
+          <div class="nav-bounds">
+                 <div class= "nav-logo">
+                     <img src="./img/tienda-mascotas-relacionada.png" alt="logo" width="90px">
+                 </div>
+                  <h1 class="store-title">Pet Shop</h1>
+                  <div class="search-box">
+                         <input type="text" placeholder="Buscar...">
+                 </div>
+                     
+                  <div class="container-icon">
+                        <img src="./img/check-out_10082248.png" width="40px">
+                 </div>
+               
+               
+            </div>
+        </header>
+        <main>
+            <section class="checkout">
+                <h2>Finalizar Compra</h2>
+
+                <form class="checkout-form">
+                    <h3>Datos del comprador</h3>
+                    <label for="name">Nombre completo</label>
+                    <input type="text" id="name" placeholder="Tu nombre" required>
+                    
+                    <label for="email">Correo electronico</label>
+                    <input type="email" id="email" placeholder="@gmail.com" required>
+
+                    <label for="address">Direccion</label>
+                    <input type="text" id="address" placeholder="Calle,Numero,Ciudad" required>
+
+                    <h3>Metodo de pago</h3> 
+                    <label for="card">Numero de tarjeta</label>
+                    <input type="text" id="card" placeholder="0000 0000 0000 0000" required>
+
+                    <label for="expiry">Vencimiento</label>
+                    <input type="text" id="expiry" placeholder="MM/AA" required>
+
+
+
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" placeholder="XXX" required>
+
+                    <button type="submit" class="btn">Pagar Ahora</button>
+
+                </form>
+
+                <a href="./index.html" class="btn-back">Volver al Inicio</a>
+            </section>
+        </main>
+           <footer>
+        <p>© 2025 Pet shop. Todos los derechos reservados.</p>
+            <p>petshop@gmail.com | +54 381 1234-5678</p>
+            <p>
+                <a href="#">Inicio</a>
+                <a href="#">Categoria</a>
+                <a href="#">Contacto</a>
+            </p>
+    </footer>
     </body>
 </html>

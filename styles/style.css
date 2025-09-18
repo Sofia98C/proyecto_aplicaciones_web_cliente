@@ -331,6 +331,72 @@ button:hover{
 
 
 
+.checkout{
+    max-width: 900px;
+    width: 100%;
+    margin: 30px auto;
+    background-color: #fff8f4;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+.checkout h2, .checkout h3{
+    color: #aa4b6b;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.checkout-form label{
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+.checkout-form input{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+.checkout-form .btn{
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    background-color: #C5796D;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.checkout-form .btn:hover{
+    background-color: #a8564b;
+} 
+
+.btn-back{
+    display: block;
+    width: fit-content;
+    padding: 8px 16px;
+    margin: 15px auto 0;
+    background-color: #ff8a65;
+    color: #333;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn-back:hover{
+    background-color: #d84315;
+    color: #fff;
+}
+
+
+
 @media(max-width:768px ){
     .product-container{
         grid-template-columns: repeat(1,1fr);
