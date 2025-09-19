@@ -209,7 +209,7 @@ button:hover{
 .product-images img:hover{
     transform: scale(1.05);
 }
-.product-datail{
+.product-detail{
     display: flex;
     flex-direction: column;
     align-items: center;
