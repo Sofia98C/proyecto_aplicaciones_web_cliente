@@ -404,7 +404,7 @@ button:hover{
 
 @media(max-width:768px ){
 
-    .main{
+    main{
         flex-direction: column;
         padding: 10px;
     }
@@ -418,7 +418,7 @@ button:hover{
         
     }
     aside{
-        display: none;
+       display: none;
     }
 
     .product-images{
