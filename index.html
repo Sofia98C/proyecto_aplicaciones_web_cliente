@@ -18,7 +18,7 @@
                     </div>
                   <h1 class="store-title">Pet Shop</h1>
                   <div class="search-box">
-                         <input type="text" placeholder="Buscar...">
+                         <input id= "input-search-product" type="text" placeholder="Buscar...">
                  </div>
                      
                   <div class="container-icon">
@@ -35,110 +35,14 @@
         <aside>
             <h3>☰ Categorías</h3>
              <ul class="categorias">
-                    <li>Gatos</li>
-                    <li>Perros</li>
-                    <li>Ofertas</li>
-                    <li>Contactos</li>
+                    <li><a class="category-product-filter" href="#">Gato</a></li>
+                    <li><a class="category-product-filter" href="#">Perro</a></li>
+                    <li><a class="category-product-filter" href="#">Oferta</a></li>
+                    <li><a class="category-product-filter" href="#">Contacto</a></li>
              </ul>
         </aside>  
         <section class="product-container">
-                <div class="product-item">
-                    <a href="product-detail.html">
-                        <img src="./img/imagen6.webp" alt="Chaleco salvavidas" >
-                        <div class="info-product">
-                             <h2>Chaleco salvavidas para perro</h2>
-                             <p class="price">$38.500</p>
-                        </div>
-                    </a>        
-                    <button>Añadir al carrito</button>
-                </div>
-                  <div class="product-item">
-                    <a href="product-detail.html">
-                        <img src="./img/imagen2.webp" alt="Pechera" >
-                        <div class="info-product">
-                                 <h2>Pechera para perro </h2>
-                                 <p class="price">$15.000</p>
-                         </div>
-                    </a>       
-                     <button>Añadir al carrito</button>
-                 </div>
-                    
-                     <div class="product-item">
-                         <a href="product-detail.html">
-                           <img src="./img/imagen3.webp" alt="Correa" >
-                           <div class="info-product">
-                              <h2>Correa retratil </h2>
-                              <p class="price">$20.500</p>
-                           </div>
-                         </a>        
-                         <button>Añadir al carrito</button>
-                     </div>
-                
-                  <div class="product-item">
-                     <a href="product-detail.html">
-                        <img src="./img/imagen4.webp" alt="Contenedor de alimento" >
-                        <div class="info-product">
-                            <h2>Contenedor para alimento </h2>
-                            <p class="price">$25.500</p>
-                        </div>
-                    </a>        
-                    <button>Añadir al carrito</button>
-                 </div>
-
-                 <div class="product-item">
-                    <a href="product-detail.html">
-                        <img src="./img/imagen5.webp" alt="Limpia patas" >
-                        <div class="info-product">
-                            <h2>Limpia Patas</h2>
-                            <p class="price">$16.600</p>
-                        </div> 
-                    </a>      
-                    <button>Añadir al carrito</button>
-                </div>
-                    
-                 <div class="product-item">
-                    <a href="product-detail.html">
-                        <img src="./img/imagen1.webp" alt="Bebedero y comedero" >
-                        <div class="info-product">
-                            <h2>Bebedero y Comedero</h2>
-                            <p class="price">$50.500</p>
-                        </div> 
-                    </a>      
-                    <button>Añadir al carrito</button>
-                </div>
-
-                 <div class="product-item">
-                    <a href="product-detail.html">
-                        <img src="./img/imagen7.webp" alt="Bolso transportador">
-                        <div class="info-product">
-                            <h2>Bolso transportador </h2>
-                            <p class="price">$60.500</p>
-                        </div>
-                     </a> 
-                    <button>Añadir al carrito</button>
-                </div>
-                             
-                <div class="product-item">
-                    <a href="product-detail.html">
-                        <img src="./img/imagen8.webp" alt="Masajeador" >
-                        <div class="info-product">
-                            <h2>Masajeador</h2>
-                            <p class="price">$24.100</p>
-                        </div> 
-                    </a>
-                    <button>Añadir al carrito</button>
-                </div>
-                          
-                <div class="product-item">
-                    <a href="product-detail.html">
-                        <img src="./img/imagen9.webp" alt="Mantilla" >
-                        <div class="info-product">
-                            <h2>Mantilla</h2>
-                            <p class="price">$24.100</p>
-                        </div> 
-                    </a>
-                    <button>Añadir al carrito</button>
-                </div>    
+               
         </section>
         
     </main>
@@ -152,4 +56,5 @@
             </p>
     </footer>
     </body>
+    <script src="./app.js"></script>
 </html>
