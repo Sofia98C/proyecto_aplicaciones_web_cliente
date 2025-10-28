@@ -1,17 +1,8 @@
+
+import { airTableToken, airTableBaseId} from './config.js';
+
 document.addEventListener("DOMContentLoaded",() =>{
 
-//data
-    const listProduct=[
-        {name:"Chaleco Salvavidas para perro", price: 38500,img:"./img/imagen6.webp", category: 'perro'},
-        {name:"Pechera para perro", price: 15500,img:"./img/imagen2.webp", category:'perro' },
-        {name:"Correa retratil", price: 20500,img:"./img/imagen3.webp", category: 'perro'},
-        {name:"Contenedor para alimento", price: 25500,img:"./img/imagen4.webp", category:'perro'},
-        {name:"Limpia Patas", price: 16600,img:"./img/imagen5.webp",category:'gato'},
-        {name:"Bebedero y comedero", price: 50500,img:"./img/imagen1.webp",category:'gato'},
-        {name:"Bolso transportador", price: 60500,img:"./img/imagen7.webp",category:'perro'},
-        {name:"Masajeador", price: 24100,img:"./img/imagen8.webp",category:'gato'},
-        {name:"Mantilla", price: 24100,img:"./img/imagen9.webp",category:'perro'},
-    ]
  // elementos Dom
     const productsDomElement= document.querySelector('.product-container');
     const inputSearch= document.getElementById('input-search-product');
@@ -21,7 +12,7 @@ document.addEventListener("DOMContentLoaded",() =>{
 
 let currentCategory = '';
 let currentSearch = '';
-   
+let products = [];   
 
 //funciones
 
@@ -68,35 +59,25 @@ function createProduct (product){
     
 }
 
-function filterproduct(text){
-    const filtered= listProduct.filter(product => product.name.toLowerCase().includes(text.toLowerCase()));
-    return filtered;
-}
 
-function filterProductByCategory(category){
-    const filtered= listProduct.filter(product => product.category === category);
-    return filtered;
-}
-
-function renderProduct(product){
+function renderProduct(productlist){
     productsDomElement.innerHTML= '';
-    product.forEach(product=>{
+    productlist.forEach(product=>{
     const newProduct = createProduct(product);
     productsDomElement.appendChild(newProduct);
     })
 }
+
 function combinedFilter(){
-    let filtered = listProduct;
+    let filtered = products;
     if (currentCategory){
-        filtered = filtered.filter (product =>product.category === currentCategory);
+        filtered = filtered.filter (p => p.category === currentCategory);
     }
     if(currentSearch){
-        filtered = filtered.filter(product => product.name.toLowerCase().includes(currentSearch.toLowerCase()));
-
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(currentSearch.toLowerCase()));    
     }
-
-    renderProduct(filtered);
- }
+    renderProduct (filtered);
+}
 
 
 
@@ -105,25 +86,39 @@ function combinedFilter(){
 inputSearch.addEventListener('keyup',(event)=>{
     currentSearch= event.target.value;
     combinedFilter();
-})
+});
 
  categoryLink.forEach(link =>{
     link.addEventListener('click',(event)=>{
         event.preventDefault();
         const category= event.target.innerText.toLowerCase();
-        if(currentCategory === category){
-            currentCategory = '';
-        }
-        else{
-            currentCategory = category;
-
-        }
-        combinedFilter();
+        currentCategory = currentCategory===category ? '' : category;
+            combinedFilter();
+        
     });
 
 });
 
-// inicializacion
 
-renderProduct(listProduct);
+async function getProductsFromAirtable(){
+    try{
+        const response = await fetch(`https://api.airtable.com/v0/${airTableBaseId}/Products`, {
+            headers: {
+                Authorization: `Bearer ${airTableToken}`
+            }
+        });
+        const data = await response.json();
+        products = data.records.map(record => ({
+            id: record.id,
+            name: record.fields.Name,
+            price: record.fields.Price,
+            category: record.fields.Category,
+            img: record.fields.Image[0].url,
+        }));
+        renderProduct(products);
+    } catch (error){
+        console.error('Error fetching products from Airtable:', error);
+    }
+}
+getProductsFromAirtable();
 });
