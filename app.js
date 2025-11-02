@@ -21,7 +21,7 @@ function createProduct (product){
     newProduct.setAttribute("class","product-item");
 
     const newAnchor= document.createElement('a');
-    newAnchor.setAttribute("href","product-detail.html" );
+    newAnchor.setAttribute("href",`product-detail.html?id=${product.id}`);
     
     const newImg= document.createElement('img');
     newImg.setAttribute("src",product.img);
@@ -42,7 +42,8 @@ function createProduct (product){
     buttonAddToCart.innerText="Agregar al carrito";
     buttonAddToCart.addEventListener('click', (event)=>{
         event.preventDefault();
-        console.log(`agregando al carrito: ${product.name}`);
+        addToCart(product);
+        
 
     });
 
@@ -79,8 +80,30 @@ function combinedFilter(){
     renderProduct (filtered);
 }
 
+function addToCart(product){
+    let cart = JSON.parse (localStorage.getItem('cart')) || [];
+    const existingItem = cart.find(item => item.id === product.id);
+    if (existingItem){
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            img: product.img,
+            quantity: 1
+        });
+    }
 
+    localStorage.setItem('cart', JSON.stringify(cart));
 
+  const cartIcon = document.getElementById('cart-icon');
+   if (cartIcon) {
+    cartIcon.classList.remove('cart-bounce');
+    void cartIcon.offsetWidth; 
+    cartIcon.classList.add('cart-bounce');
+   }
+}
 // eventos
 
 inputSearch.addEventListener('keyup',(event)=>{
@@ -107,8 +130,11 @@ async function getProductsFromAirtable(){
                 Authorization: `Bearer ${airTableToken}`
             }
         });
-        const data = await response.json();
-        products = data.records.map(record => ({
+       
+       
+            const data = await response.json();
+       
+             products = data.records.map(record => ({
             id: record.id,
             name: record.fields.Name,
             price: record.fields.Price,
@@ -117,8 +143,9 @@ async function getProductsFromAirtable(){
         }));
         renderProduct(products);
     } catch (error){
-        console.error('Error fetching products from Airtable:', error);
+        console.error('Error al obtener los productos:', error);
     }
 }
 getProductsFromAirtable();
 });
+

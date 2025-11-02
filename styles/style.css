@@ -46,6 +46,7 @@ header{
 .nav-logo,
 .container-icon{
     flex: 0;
+    padding: 10px;
 
 }
 .store-title{
@@ -231,6 +232,7 @@ button:hover{
     padding: 20px;
     margin-top: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
 }
 .product-description h3{
     color:var(--relevant-color);
@@ -252,7 +254,9 @@ button:hover{
     line-height: 1.5;
 }
 .info-product-detail button{
-    margin-top: 15px;
+    display: block;
+    margin: 15px auto;
+    width: fit-content;
     background-color: var(--button-color);
     color: #333;
     border: none;
@@ -260,6 +264,12 @@ button:hover{
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+    
+
+}
+a{
+    text-decoration: none;
+    color : #333
 }
 .info-product-detail button:hover{
     background-color: #d84315;
@@ -458,6 +468,20 @@ button:hover{
 .contact-info button:hover{
     background-color: #d84315;
     color: #fff;
+}
+@keyframes bounce{
+    0% ,20% , 50%, 80%,100%{
+        transform: translateY(0);
+    }
+    40%{
+        transform: translateY(-8px);
+    }
+    60%{
+        transform: translateY(-4px);
+    }
+}
+.cart-bounce{
+    animation: bounce 0.6s ease;
 }
 
 @media(max-width:768px ){
