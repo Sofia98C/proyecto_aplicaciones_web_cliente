@@ -15,14 +15,15 @@ async function loadProductDetail(){
     }
     try {
         const response = await fetch(`https://api.airtable.com/v0/${airTableBaseId}/Products/${productId}`, {
-            headers: { Authorization: `Bearer ${airTableToken}` 
-        }
+            headers: {
+                Authorization: `Bearer ${airTableToken}`
+            }
         });
 
 
         const record = await response.json();
-        const product = {
 
+        const product = {
             id: record.id,
             name: record.fields.Name,
             price: record.fields.Price,
@@ -36,6 +37,7 @@ async function loadProductDetail(){
         addToCartButton.addEventListener('click', (event) => {
             event.preventDefault();
             addToCart(product);
+            alert("Producto agregado al carrito");
            
         });
     } catch (error){
@@ -67,36 +69,29 @@ function renderProductDetail (product){
            descriptionP.textContent = product.description;
        }    
     }
- const priceElement = document.getElementById('product-price');
+    const priceElement = document.getElementById('product-price');
     if (priceElement) {
         priceElement.textContent = `$${product.price}.00`;
     }
-       
-}
+    
+
 function addToCart(product){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     const existingitem = cart.find(item => item.id === product.id);
     if (existingitem){
         existingitem.quantity += 1;
-    } else {
-        cart.push({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            img: product.images[0],
-            quantity: 1
+    }else{
+           cart.push({
+           id: product.id,
+           name: product.name,
+           price: product.price,
+           img: product.images[0],
+           quantity: 1
         });
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
 
-    const cartIcon = document.getElementById('cart-icon');
-    if (cartIcon) {
-        cartIcon.classList.remove('cart-bounce');
-        void cartIcon.offsetWidth; 
-        cartIcon.classList.add('cart-bounce');
-        
-    }
 }
-
+}

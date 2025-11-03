@@ -1,4 +1,3 @@
-
 import { airTableToken, airTableBaseId} from './config.js';
 
 document.addEventListener("DOMContentLoaded",() =>{
@@ -16,7 +15,7 @@ let products = [];
 
 //funciones
 
-function createProduct (product){
+function createProduct (product) {
     const newProduct= document.createElement('div');
     newProduct.setAttribute("class","product-item");
 
@@ -37,18 +36,25 @@ function createProduct (product){
     const newPrice= document.createElement ('p');
     newPrice.setAttribute("class","price");
     newPrice.innerText= `Precio: $${product.price}.00 `;
-
-    const buttonAddToCart= document.createElement('button');
-    buttonAddToCart.innerText="Agregar al carrito";
-    buttonAddToCart.addEventListener('click', (event)=>{
+    
+    const buttonAddToCart = document.createElement('button');
+    buttonAddToCart.innerText = 'Añadir al carrito';
+    
+     buttonAddToCart.addEventListener('click',(event)=>{
         event.preventDefault();
-        addToCart(product);
-        
+    addToCart(product);
 
-    });
+    const cartIcon = document.getElementById('cart-icon');
+    if (cartIcon) {
+        cartIcon.classList.add('cart-bounce');
+        setTimeout(() => {
+            cartIcon.classList.remove('cart-bounce');
+        }, 600);
+    }
+    
+});
 
-   
-
+ 
     newDiv.appendChild(newName);
     newDiv.appendChild(newPrice);
     newDiv.appendChild(buttonAddToCart);
@@ -57,15 +63,15 @@ function createProduct (product){
     newProduct.appendChild(newAnchor);
 
     return newProduct;
-    
-}
+};
+
 
 
 function renderProduct(productlist){
     productsDomElement.innerHTML= '';
     productlist.forEach(product=>{
-    const newProduct = createProduct(product);
-    productsDomElement.appendChild(newProduct);
+     const newProduct = createProduct(product);
+     productsDomElement.appendChild(newProduct);
     })
 }
 
@@ -83,7 +89,8 @@ function combinedFilter(){
 function addToCart(product){
     let cart = JSON.parse (localStorage.getItem('cart')) || [];
     const existingItem = cart.find(item => item.id === product.id);
-    if (existingItem){
+
+    if (existingItem) {
         existingItem.quantity += 1;
     } else {
         cart.push({
@@ -91,18 +98,15 @@ function addToCart(product){
             name: product.name,
             price: product.price,
             img: product.img,
+            stock: product.stock,
             quantity: 1
         });
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
 
-  const cartIcon = document.getElementById('cart-icon');
-   if (cartIcon) {
-    cartIcon.classList.remove('cart-bounce');
-    void cartIcon.offsetWidth; 
-    cartIcon.classList.add('cart-bounce');
-   }
+ 
+    
 }
 // eventos
 
@@ -139,6 +143,7 @@ async function getProductsFromAirtable(){
             name: record.fields.Name,
             price: record.fields.Price,
             category: record.fields.Category,
+            stock: record.fields.Stock || 0,
             img: record.fields.Image[0].url,
         }));
         renderProduct(products);
@@ -147,5 +152,7 @@ async function getProductsFromAirtable(){
     }
 }
 getProductsFromAirtable();
-});
 
+}
+
+);

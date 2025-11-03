@@ -469,6 +469,28 @@ a{
     background-color: #d84315;
     color: #fff;
 }
+.stock-info{
+    font-size: 0.9rem;
+    margin-top: 5px;
+    font-weight: bold;
+}
+.stock-ok{
+    color:#4caf50
+}
+.stock-low{
+    color:#ff6b6b
+}
+.stock-out{
+    color:#999
+
+}
+button:disabled,
+.btn:disabled{
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 @keyframes bounce{
     0% ,20% , 50%, 80%,100%{
         transform: translateY(0);
