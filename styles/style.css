@@ -529,7 +529,7 @@ button:disabled,
         flex-direction: column;
         align-items: center;
         gap: 15px;
-    }
+     }
     
     .product-images img{
         width: 80%;
