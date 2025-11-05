@@ -1,8 +1,13 @@
-import { airTableToken,airTableBaseId } from "./config.js";
+import { AIRTABLE_TOKEN, AIRTABLE_BASE_ID} from './config.js';
+
 
 document.addEventListener("DOMContentLoaded", () => {
 loadProductDetail();
 });
+
+
+const airTableToken = AIRTABLE_TOKEN;
+const airTableBaseId = AIRTABLE_BASE_ID;
 
 async function loadProductDetail(){
     const params = new URLSearchParams(window.location.search);

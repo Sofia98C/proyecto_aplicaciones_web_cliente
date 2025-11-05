@@ -1,4 +1,4 @@
-import { airTableToken, airTableBaseId} from './config.js';
+import { AIRTABLE_TOKEN, AIRTABLE_BASE_ID} from './config.js';
 
 document.addEventListener("DOMContentLoaded",() =>{
 
@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded",() =>{
     const categoryLink= document.querySelectorAll('.category-product-filter');
 
 // variable 
+
+const airTableToken = AIRTABLE_TOKEN;
+const airTableBaseId = AIRTABLE_BASE_ID;
 
 let currentCategory = '';
 let currentSearch = '';
