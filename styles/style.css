@@ -506,6 +506,28 @@ button:disabled,
     animation: bounce 0.6s ease;
 }
 
+.toast-message{
+    position: fixed;
+    right: 1rem;
+    bottom: 5rem;
+    background-color:#aa4b6b;
+    color: #ccc;
+    padding: 12px 18px;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.3 ease;
+    z-index: 1000;
+}
+.toast-message.visible{
+    opacity: 1;
+}
+.toast-message.error{
+    background-color: #b00020;
+}
+.toast-message.success{
+    background-color: #114500;
+}
+
 @media(max-width:768px ){
 
     main{

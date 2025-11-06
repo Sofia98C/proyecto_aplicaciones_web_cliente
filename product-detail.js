@@ -1,10 +1,9 @@
-import { AIRTABLE_TOKEN, AIRTABLE_BASE_ID} from './config.js';
-
+import { AIRTABLE_TOKEN, AIRTABLE_BASE_ID} from './env.js';
+import { showMessage } from './toast.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-loadProductDetail();
+  loadProductDetail();
 });
-
 
 const airTableToken = AIRTABLE_TOKEN;
 const airTableBaseId = AIRTABLE_BASE_ID;
@@ -14,7 +13,7 @@ async function loadProductDetail(){
     const productId = params.get('id');
 
     if (!productId){
-        alert("Producto no encontrado");
+        showMessage("Producto no encontrado");
         window.location.href = "index.html";
         return;
     }
@@ -27,76 +26,83 @@ async function loadProductDetail(){
 
 
         const record = await response.json();
+        const fields = record.fields;
 
         const product = {
             id: record.id,
-            name: record.fields.Name,
-            price: record.fields.Price,
-            category: record.fields.Category,
-            description: record.fields.Description || "Sin descripcion disponible",
-            images: record.fields.Image.map(img => img.url),
+            name: fields.Name,
+            price: fields.Price,
+            category: fields.Category,
+            description: fields.Description || "Sin descripcion disponible",
+            images: fields.Image.map(img => img.url),
+            stock: fields.Stock || 0
         };
         renderProductDetail(product);
 
         const addToCartButton = document.getElementById('add-to-cart-button');
+        if (addToCartButton){
         addToCartButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            addToCart(product);
-            alert("Producto agregado al carrito");
-           
-        });
+        
+            if (product.stock <= 0){
+                showMessage("Producto son stock", "error");
+            return;
+}
+
+        addToCart(product);
+        showMessage(`${product.name} agregado al carrito`, "success");
+    });
+}
+    
     } catch (error){
         console.error('Error al cargar el detalle del producto:', error);
-        alert("Error al cargar el producto");
+        showMessage("Error al cargar el producto", "error");
         window.location.href = "index.html";
     }
 }
 function renderProductDetail (product){
     const titleElement = document.querySelector('.product-detail h2' );
-    if (titleElement) {
-        titleElement.textContent = product.name;
-    }   
+    if (titleElement) titleElement.textContent = product.name;
+     
     const imgContainer = document.getElementById('img-container');
     if (imgContainer) {
         imgContainer.innerHTML = '';
-        product.images.forEach(imgUrl => {
-            const imgElement = document.createElement('img');
-            imgElement.src = imgUrl;
-            imgElement.alt = product.name;
-            imgContainer.appendChild(imgElement);
+        if(product.images.length > 0){
+            product.images.forEach(imgUrl => {
+            const img = document.createElement('img');
+            img.src = imgUrl;
+            img.alt = product.name;
+            imgContainer.appendChild(img);
         });
+    }else {
+        imgContainer.textContent = 'Sin imagen disponible';
     }
+}
    
-    const descriptionElement = document.getElementById('product-description');
-   if (descriptionElement) {
-       const descriptionP = descriptionElement.querySelector('p');
-       if (descriptionP) {
-           descriptionP.textContent = product.description;
-       }    
-    }
+    const descriptionElement = document.querySelector('#product-description p');
+   if (descriptionElement) descriptionElement.textContent = product.description;
+     
     const priceElement = document.getElementById('product-price');
-    if (priceElement) {
-        priceElement.textContent = `$${product.price}.00`;
-    }
+    if (priceElement) priceElement.textContent = `$${product.price}.00`;
+}
     
 
 function addToCart(product){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
     const existingitem = cart.find(item => item.id === product.id);
+   
     if (existingitem){
         existingitem.quantity += 1;
-    }else{
+    } else {
            cart.push({
-           id: product.id,
-           name: product.name,
-           price: product.price,
-           img: product.images[0],
-           quantity: 1
+             id: product.id,
+             name: product.name,
+             price: product.price,
+             img: product.images[0],
+             quantity: 1,
+             stock:product.stock 
         });
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
 
-}
 }

@@ -1,3 +1,5 @@
+import { showMessage } from "./toast.js";
+
 document.addEventListener('DOMContentLoaded', async () => {
     renderCart();
 });
@@ -69,7 +71,7 @@ function createCartItem(item, index) {
 
     const input = document.createElement ('input');
     input.type = 'number';
-    input.id = `quantity${index}`;
+    input.id = `quantity-${index}`;
     input.value = item.quantity;
     input.min = 1;
     input.max = item.stock;
@@ -121,6 +123,8 @@ function createCartSummary(container, total) {
     container.appendChild(totalP);
     container.appendChild(checkoutLink);
     container.appendChild(clearBtn);
+
+    clearBtn.addEventListener('click', clearCart);
 }
 
 
@@ -133,6 +137,7 @@ function createBackToShopButton(){
 }
 
 function attachEventListeners(cart) {
+
    document.querySelectorAll('.quantity input').forEach(input => {
         input.addEventListener('change', (event) => {
             const index = parseInt(event.target.dataset.index);
@@ -142,10 +147,11 @@ function attachEventListeners(cart) {
             if (isNaN(newQuantity)) return;
 
             if (newQuantity > item.stock) {
-                alert (`Cantidad solicitada excede el stock disponible (${item.stock} unidades).`);
+                showMessage(`Cantidad solicitada excede el stock disponible (${item.stock} unidades)`,'warning');
                 event.target.value = item.stock;
+                updateQuantity(index,item.stock)
             } else if( newQuantity < 1) {
-                alert (`Cantidad mínima permitida es 1.`);
+                showMessage(`Cantidad mínima permitida es 1`,'warning');
                 event.target.value = 1;
                 updateQuantity(index, 1);
             } else {
@@ -157,10 +163,11 @@ function attachEventListeners(cart) {
     document.querySelectorAll('.btn-remove').forEach(button => {
         button.addEventListener('click', (event) => {
             const index = parseInt(event.target.dataset.index);
-            if (index !== undefined){
-                removeItem(parseInt(index));
-            }else if (event.target.id === 'clear-cart'){
+            if (event.target.id === 'clear-cart'){
                 clearCart();
+                
+            }else if (index !== undefined){
+                removeItem(parseInt(index));
             }
         });
     });
@@ -176,7 +183,7 @@ function updateQuantity(index, newQuantity) {
 
 
 function removeItem (index){
-    let cart = JSON.parse(localStorage.getItem('cart') || []);
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart.splice(index,1);
     localStorage.setItem('cart' , JSON.stringify(cart));
     renderCart();
