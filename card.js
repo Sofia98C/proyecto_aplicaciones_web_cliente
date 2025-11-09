@@ -189,10 +189,10 @@ function removeItem (index){
     renderCart();
 } 
 function clearCart(){
-    if (confirm('¿ Estas seguro de que quieres vaciar el carrito?')){
         localStorage.removeItem('cart');
+        showMessage('Carrito vaciado carrectamente', 'seccuess');
         renderCart();
     }
 
-}
+
 

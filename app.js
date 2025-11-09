@@ -81,7 +81,7 @@ function combinedFilter(){
     let filtered = products;
 
     if (currentCategory){
-        filtered = filtered.filter (p => p.category.toLowerCase === currentCategory);
+        filtered = filtered.filter (p => p.category.toLowerCase() === currentCategory);
     }
 
     if(currentSearch){

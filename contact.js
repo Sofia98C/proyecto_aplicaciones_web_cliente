@@ -1,11 +1,12 @@
 import { AIRTABLE_TOKEN, AIRTABLE_BASE_ID } from "./env.js";
 import { showMessage } from "./toast.js";
 
-document.addEventListener("DOMContentLoaded", () =>{
-  
+
       const airTableToken = AIRTABLE_TOKEN;
       const airTableBaseId = AIRTABLE_BASE_ID;
 
+document.addEventListener("DOMContentLoaded", () =>{
+  
       const contactForm = document.getElementById('form-contacto');
       if(!contactForm) return;
 
