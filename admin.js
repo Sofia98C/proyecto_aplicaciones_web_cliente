@@ -52,7 +52,8 @@ async function loadProducts () {
               category: record.fields.Category,
               stock: record.fields.Stock || 0,
               description: record.fields.Description || '',
-              img: record.fields.Image?.[0].url || './img/placeholder.jpg',
+              img: record.fields.Image && record.fields.Image[0] ? record.fields.Image[0].url : '',
+              images: record.fields.Image || [] 
 
     }));
  
@@ -72,7 +73,7 @@ function renderProductsTable(){
     if(products.length === 0){
         const row = document.createElement('tr');
         const td = document.createElement('td');
-        td.setAttribute('colspan','6') ;
+        td.setAttribute('colspan','7') ;
         td.className = 'table-massege';
         td.textContent = 'No hay productos';
         row.appendChild(td);
@@ -92,9 +93,12 @@ function createProductRow(product){
     
     const tdImg = document.createElement('td');
     const img = document.createElement('img');
-    img.src = product.img;
+    img.src = product.img  || './img/placeholder.jpg';
     img.alt = product.name;
     img.className = 'product-img-preview';
+       img.onerror = function() {
+        this.src = './img/placeholder.jpg';
+    };
     tdImg.appendChild(img);
 
     const tdName = document.createElement('td');
@@ -140,8 +144,8 @@ function createProductRow(product){
     tdActions.appendChild(btnDelete);
 
     row.appendChild(tdImg);
-    row.appendChild(tdPrice);
     row.appendChild(tdName);
+    row.appendChild(tdPrice);
     row.appendChild(tdCategory);
     row.appendChild(tdDescription);
     row.appendChild(tdStock);
@@ -160,8 +164,13 @@ async function handleSubmit(event) {
      const category= document.getElementById('product-category').value;
      const stock= parseInt(document.getElementById('product-stock').value);
      const description= document.getElementById('product-description').value.trim();
-     const  image= document.getElementById('product-image').value.trim();
     
+    
+     const imagesInput= document.getElementById('product-images').value.trim();
+     const newImages= processImagesUrl(imagesInput);
+    
+    
+
      if(!name){
         return showMessage('El nombre del producto es necesario', 'warning');
      }
@@ -174,9 +183,11 @@ async function handleSubmit(event) {
      if(isNaN(stock) || stock < 0){
         return showMessage('El stock no puede ser menor a 0','warning');
      }
-     if(!image){
-        return showMessage('La URL de la imagen es necesario ','warning');
-     }   
+
+     if (newImages.length === 0){
+        return showMessage('Dbes agregar al menos una URL de imagen','warning');
+
+     }
 
      const productData ={
         fields:{
@@ -185,7 +196,7 @@ async function handleSubmit(event) {
             Category:category,
             Stock:stock,
             Description:description,
-            Image:[{ url:image}],
+            Image:newImages.slice(0,3)
         }
 };
 
@@ -237,6 +248,17 @@ try{
     }
 }
 
+function processImagesUrl(imagesInput){
+    if(!imagesInput) return [];
+
+    return imagesInput.split(',')
+        .map(url => url.trim())
+        .filter(url => url )
+        .map(url => ({url}));
+
+}
+
+
 function editProduct(productId){
     const product = products.find(p => p.id === productId);
 
@@ -248,13 +270,18 @@ function editProduct(productId){
     document.getElementById('product-category').value = product.category;
     document.getElementById('product-stock').value = product.stock;
     document.getElementById('product-description').value = product.description;
-    document.getElementById('product-image').value = product.img;
+    
 
     
-    document.getElementById('product-title').textContent = 'Agregar nuevo producto';
+     const imagesString = product.images ? product.images.map(img => img.url).join(', '): (product.img ? product.img : '');
+    
+    document.getElementById('product-images').value = imagesString;
+
+    document.getElementById('product-title').textContent = 'Editar Producto';
     editingProductId = productId;
     formHasChanges = false;
 
+    window.scrollTo({top: 0, behavior: 'smooth'});
     
 }
 
@@ -279,7 +306,7 @@ async function  deleteProduct(productId,productName){
 function resetForm(){
     document.getElementById('product-form').reset();
     document.getElementById('product-id').value = '';
-   document.getElementById('product-title').textContent = 'Editar producto';
+   document.getElementById('product-title').textContent = 'Agregar nuevo producto';
     editingProductId = null;
     formHasChanges = false;
 }
