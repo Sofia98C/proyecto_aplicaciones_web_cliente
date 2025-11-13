@@ -1,8 +1,25 @@
 import { AIRTABLE_TOKEN, AIRTABLE_BASE_ID} from './env.js';
 import { showMessage } from './toast.js';
 
+function updateCartCount(){
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalItems = cart.reduce((total,item) => total + item.quantity,0);
+    const cartCount = document.getElementById('cart-count');
+
+    if(cartCount){
+        cartCount.textContent = totalItems;
+
+        if(totalItems === 0){
+            cartCount.style.display ='none';
+        }else{
+            cartCount.style.display ='flex';
+        }
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   loadProductDetail();
+  updateCartCount();
 });
 
 const airTableToken = AIRTABLE_TOKEN;
@@ -50,6 +67,7 @@ async function loadProductDetail(){
 
         addToCart(product);
         showMessage(`${product.name} agregado al carrito`, "success");
+        updateCartCount();
     });
 }
     
@@ -104,5 +122,6 @@ function addToCart(product){
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
+
 
 }

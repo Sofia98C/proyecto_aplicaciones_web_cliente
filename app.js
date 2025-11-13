@@ -17,6 +17,32 @@ document.addEventListener('DOMContentLoaded',() =>{
     let products = [];   
 
 
+function updateCartCount(){
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalItems = cart.reduce((total,item) => total + item.quantity,0);
+    const cartCount = document.getElementById('cart-count');
+
+    if(cartCount){
+        cartCount.textContent = totalItems;
+
+        if(totalItems === 0){
+            cartCount.style.display ='none';
+        }else{
+            cartCount.style.display ='flex';
+        }
+    }
+}
+function initCartCounter (){
+    updateCartCount();
+
+    window.addEventListener('storage',function(event){
+        if(event.key === 'cart'){
+            updateCartCount();
+        }
+    });
+}
+
+
 function createProduct(product) {
   const newProduct = document.createElement('div');
   newProduct.classList.add('product-item');
@@ -49,13 +75,14 @@ function createProduct(product) {
     }
     addToCart(product);
     showMessage(`${product.name} agregado al carrito`, 'success');
-  });
    
   const cartIcon = document.getElementById('cart-icon');
     if (cartIcon) {
         cartIcon.classList.add('cart-bounce');
         setTimeout(() =>  cartIcon.classList.remove('cart-bounce'), 600);
     }
+
+});
 
   newDiv.appendChild(newName);
   newDiv.appendChild(newPrice);
@@ -95,7 +122,7 @@ function addToCart(product){
     const existingItem = cart.find(item => item.id === product.id);
 
     if (existingItem) {
-    if ( existingItem.quantity < existingItem.stock){
+     if ( existingItem.quantity < existingItem.stock){
         existingItem.quantity +=1;
     } else {
         showMessage('No hay más stock disponible', 'warning');
@@ -114,6 +141,7 @@ function addToCart(product){
 
     localStorage.setItem('cart', JSON.stringify(cart));
 
+    updateCartCount();
     
 }
 
@@ -128,10 +156,11 @@ inputSearch.addEventListener('keyup',(event)=>{
         event.preventDefault();
         const category= event.target.innerText.toLowerCase();
         currentCategory = currentCategory===category ? '' : category;
-            combinedFilter();
+            
+        combinedFilter();
         
     });
-
+    
 });
 
 
@@ -161,8 +190,8 @@ async function getProductsFromAirtable(){
         showMessage('Error al cargar los productos','error');
     }
 }
+
+initCartCounter();
 getProductsFromAirtable();
+});
 
-}
-
-);

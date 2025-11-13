@@ -1,7 +1,25 @@
 import { showMessage } from "./toast.js";
 
+
+function updateCartCount(){
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalItems = cart.reduce((total,item) => total + item.quantity,0);
+    const cartCount = document.getElementById('cart-count');
+
+    if(cartCount){
+        cartCount.textContent = totalItems;
+
+        if(totalItems === 0){
+            cartCount.style.display ='none';
+        }else{
+            cartCount.style.display ='flex';
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     renderCart();
+    updateCartCount();
 });
 function renderCart() {
     const cartItemsContainer = document.querySelector('.cart-items');
@@ -32,9 +50,6 @@ function renderCart() {
 
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     createCartSummary(cartSummary, total);
-
-    const backLink = createBackToShopButton();
-    cartSummary.appendChild(backLink);
 
     attachEventListeners(cart);
 }
@@ -110,28 +125,42 @@ function createCartSummary(container, total) {
     totalP.className = 'cart-total';
     totalP.innerHTML =`<strong>Total a pagar:</strong> $${total}.00`;
 
-    const checkoutLink = document.createElement ('a');
-    checkoutLink.href = './checkout.html';
-    checkoutLink.className = 'btn';
-    checkoutLink.textContent = 'Finalizar compra';
+    const summaryButtons = document.createElement('div');
+    summaryButtons.className = 'cart-summary-buttons';
 
-    const clearBtn = document.createElement ('button');
-    clearBtn.className = 'btn-remove';
+    const clearBtn = document.createElement ('a');
+    clearBtn.href = '#';
+    clearBtn.className = 'btn-cart btn-clear-cart';
     clearBtn.id = 'clear-cart';
     clearBtn.textContent = 'Vaciar carrito';
 
-    container.appendChild(totalP);
-    container.appendChild(checkoutLink);
-    container.appendChild(clearBtn);
+    const backLink = createBackToShopButton();
+   
 
-    clearBtn.addEventListener('click', clearCart);
+    const checkoutLink = document.createElement ('a');
+    checkoutLink.href = './checkout.html';
+    checkoutLink.className = 'btn-cart btn-checkout';
+    checkoutLink.textContent = 'Finalizar compra';
+
+    summaryButtons.appendChild(clearBtn);
+    summaryButtons.appendChild(backLink);
+    summaryButtons.appendChild(checkoutLink);
+
+    container.appendChild(totalP);
+    container.appendChild(summaryButtons);
+   
+
+    clearBtn.addEventListener('click', function(event){
+        event.preventDefault();
+        clearCart();
+    });
 }
 
 
 function createBackToShopButton(){
     const backLink = document.createElement('a')
     backLink.href ='index.html'
-    backLink.className ='btn btn-back-shop';
+    backLink.className ='btn-cart btn-back-shop';
     backLink.textContent = 'Volver a tienda'
     return backLink; 
 }
@@ -178,7 +207,9 @@ function updateQuantity(index, newQuantity) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart[index].quantity = newQuantity;
     localStorage.setItem('cart', JSON.stringify(cart));
+      
     renderCart();
+    updateCartCount();
 }
 
 
@@ -187,11 +218,13 @@ function removeItem (index){
     cart.splice(index,1);
     localStorage.setItem('cart' , JSON.stringify(cart));
     renderCart();
+    updateCartCount();
 } 
 function clearCart(){
         localStorage.removeItem('cart');
         showMessage('Carrito vaciado carrectamente', 'seccuess');
         renderCart();
+        updateCartCount();
     }
 
 

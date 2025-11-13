@@ -4,7 +4,15 @@ import { showMessage } from "./toast.js";
   const airTableToken = AIRTABLE_TOKEN;
   const airTableBaseId = AIRTABLE_BASE_ID;
 
+
 document.addEventListener("DOMContentLoaded", ()=>{
+
+  
+    const cartCount = document.getElementById('cart-count');
+    if(cartCount){
+        cartCount.style.display = 'none';
+        }
+  
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const checkoutSection = document.querySelector('.checkout');
     if (!checkoutSection) return;

@@ -8,11 +8,17 @@ let products = [];
 let editingProductId = null;
 let formHasChanges = false;
 
+
+
 document.addEventListener("DOMContentLoaded", ()=> {
     loadProducts();
 
+    const modal = document.getElementById('modal');
+    const btnOpenModal = document.getElementById('btn-open-modal');
+    const btnCloseModal = document.getElementById('modal-close');
+    const btnCancel = document.getElementById('btn-cancel')
     const productForm = document.getElementById('product-form');
-    const btnCancel = document.getElementById('btn-cancel');
+
 
     if(productForm){ 
         productForm.addEventListener("submit",handleSubmit);
@@ -21,10 +27,31 @@ document.addEventListener("DOMContentLoaded", ()=> {
         });
 }
 
-    if (btnCancel){
-        btnCancel.addEventListener('click',resetForm);   
+if (btnOpenModal){
+    btnOpenModal.addEventListener('click', () => {
+        resetForm();
+        modal.style.display = 'flex';
+    });
+}
+    if (btnCloseModal){
+        btnCloseModal.addEventListener('click', () =>{
+            modal.style.display='none';
+        });
     }
-});
+    if (btnCancel){
+        btnCancel.addEventListener('click',() => {
+            modal.style.display = 'none';
+            resetForm();
+        });
+    }
+
+    window.addEventListener('click', event => {
+        if (event.target === modal){
+            modal.style.display = 'none';
+        }
+    });
+
+
 window.addEventListener('beforeunload',event =>{
     if(formHasChanges && editingProductId){
         event.preventDefault();
@@ -74,7 +101,7 @@ function renderProductsTable(){
         const row = document.createElement('tr');
         const td = document.createElement('td');
         td.setAttribute('colspan','7') ;
-        td.className = 'table-massege';
+        td.className = 'table-messege';
         td.textContent = 'No hay productos';
         row.appendChild(td);
         tbody.appendChild(row);
@@ -218,9 +245,8 @@ try{
                 },
                 body: JSON.stringify(productData)
             });
-            if (response.ok) showMessage('Producto actualizado con exito', 'success')
-    }else {
-        response = await fetch(`https://api.airtable.com/v0/${airTableBaseId}/Products`, {
+        }else {
+              response = await fetch(`https://api.airtable.com/v0/${airTableBaseId}/Products`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${airTableToken}`,
@@ -228,17 +254,25 @@ try{
                 },
                 body: JSON.stringify(productData)
             });
-            if (!response.ok) showMessage('Producto creado con exito', 'success');
         }
-          if (!response.ok) {
+    
+              if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error?.message || 'Error al guardar el producto');
         }
 
-        formHasChanges=false;
-        resetForm();
-        loadProducts();
+            if (editingProductId) {
+            showMessage('Producto actualizado con exito', 'success');
+        } else {
+            showMessage('Producto creado con exito', 'success');
+        }
+        
+        modal.style.display = 'none';
 
+          formHasChanges = false;
+          resetForm();
+          loadProducts();
+       
     }catch(error){
         console.error('Error al guardar productos', error);
         showMessage('Error al guardar producto','error');
@@ -280,8 +314,9 @@ function editProduct(productId){
     document.getElementById('product-title').textContent = 'Editar Producto';
     editingProductId = productId;
     formHasChanges = false;
-
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    
+    const modal = document.getElementById('modal');
+     modal.style.display ='flex';
     
 }
 
@@ -312,4 +347,5 @@ function resetForm(){
 }
 
 
+});
 
